@@ -2,21 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Add Record Form</title>
+<title><?= $title ?></title>
 </head>
 <body>
-<form action="insert.php" method="post">
+<form action="index.php" method="post">
+   
     <p>
-        <label for="firstName">First Name:</label>
-        <input type="text" name="firstname" id="firstName">
+       Select the city of your choice
     </p>
     <p>
-        <label for="lastName">Last Name:</label>
-        <input type="text" name="lastname" id="lastName">
-    </p>
-    <p>
-        <label for="emailAddress">Email Address:</label>
-        <input type="text" name="email" id="emailAddress">
+       
+        <input type="text" name="city" id="city">
     </p>
     <input type="submit" value="Submit">
 </form>
