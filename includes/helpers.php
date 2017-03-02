@@ -37,7 +37,7 @@
         // trimming and storing them in $course
         while(true)
         {
-          if(preg_match('/(?<=">)(.*),/',$courses[$i][0],$temp) == false)
+          if(preg_match('/(?<=">)(.*)<\//',$courses[0][$i],$temp) == false)
             break;
           $course[i] = $temp[1];
           $i = $i+1;
