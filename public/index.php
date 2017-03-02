@@ -20,27 +20,47 @@
             echo "You must provide a city name.";
         }
         
+        $page = 1;
+        
         // scrape data from shikha.com
-        $string = file_get_contents('http://www.shiksha.com/b-tech/colleges/b-tech-colleges-'.urlencode($_POST["city"]));
+        $string = file_get_contents("http://www.shiksha.com/b-tech/colleges/b-tech-colleges-".urlencode($_POST["city"])."-$page");
         
         if($string === false)
             echo "Please enter a valid city name";
     
         else
         {
-            preg_match('/(?<=class="tuple-clg-heading")(.*)<\/a>/',$string,$college_link);
-            
-            while(true)
+            for($k=1;$k>0;$k++)
             {
-                // extract college's link from the scraped data
-               
-                preg_match('/(?<=href=")(.*)" target/',$college_link[1],$college_link);
+                if($string === false)
+                    break;
+                // extract links of all colleges on a page
+                preg_match_all('/(?<=class="tuple-clg-heading")(.*)<\/a>/',$string,$temp);
                 
-                // passing the college link for scraping data furthur and storing in database
-                get_college_info($college_link);
+                while(true)
+                {
+                    if($temp[1][$i]== NULL)
+                        break;
+                    
+                    // trimming each string to get exact link   
+                    preg_match('/(?<=href=")(.*)" target/',$temp[1][$i],$college_link);
+                    
+                    // passing the college link for scraping data furthur and storing in database
+                    get_college_info($college_link);
+                    
+                    $i++;
+                }
                 
-            }
+                // change page
+                $page = $page +1;
+                
+                // delay for 2s
+                sleep(2);
+                $string = file_get_contents("http://www.shiksha.com/b-tech/colleges/b-tech-colleges-".urlencode($_POST["city"])."-$page");
+            } 
             
+            // render results
+            render("result.php",["title" => "result"]);
         }
     }
 ?>
