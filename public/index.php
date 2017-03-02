@@ -30,7 +30,7 @@
     
         else
         {
-            for($k=1;$k>0;$k++)
+            while(true)
             {
                 if($string === false)
                     break;
