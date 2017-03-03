@@ -55,12 +55,25 @@
                 $page = $page +1;
                 
                 // delay for 2s
-                sleep(2);
+                //sleep(2);
+                
                 $string = file_get_contents("http://www.shiksha.com/b-tech/colleges/b-tech-colleges-".urlencode($_POST["city"])."-$page");
             } 
             
+            // attempting to connect to mysql server
+            $link = mysqli_connect("127.0.0.1", "pranjal123321", "zrrJ8zNEdpuTwuty", "project1");
+            
+            // selecting data from mysql table
+            $query = "SELECT * FROM college_info WHERE 1";
+            $rows = mysqli_query($link,$query);
+            
+            if($rows === false )
+            {
+                echo "ERROR: Could not execute $query. " . mysqli_error($link);
+            }
+            
             // render results
-            render("result.php",["title" => "result"]);
+            render("result.php",["title" => "result","rows" => $rows]);
         }
     }
 ?>
