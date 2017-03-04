@@ -12,7 +12,9 @@
     </p>
     <p>
        
-        <input type="text" name="city" id="city">
+       <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="city" placeholder="Enter city" type="text"/>
+        </div>
     </p>
     <input type="submit" value="Submit">
 </form>

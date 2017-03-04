@@ -65,6 +65,9 @@
             
             // selecting data from mysql table
             $query = "SELECT * FROM college_info WHERE 1";
+            $query = mysqli_real_escape_string($link, $query);
+
+            
             $rows = mysqli_query($link,$query);
             
             if($rows === false )
@@ -73,7 +76,7 @@
             }
             
             // render results
-            render("result.php",["title" => "result","rows" => $rows]);
+            render("result.php",["title" => "result","rows" => $rows,"link" => $link]);
         }
     }
 ?>
