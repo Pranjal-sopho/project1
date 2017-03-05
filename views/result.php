@@ -9,38 +9,43 @@
        <table>
         <?php
             
-            $string = "<div>
-                            <a href=\"courses_offered.php\">click here</a> 
-                      </div>";
-        
-            foreach ($rows as $row)
+            // querying database
+            $bool1 = mysqli_real_query($link,$query);
+            if($bool1 === false )
+                echo "ERROR: Could not execute $query. " . mysqli_error($link);
+            
+            do
             {
-                // extracting infra facilities of each college
-                $query = "\"SELECT * FROM infrastructure WHERE serial number = ?\",$row\[\"Serial_number\"\]";
-                $infrastructure = mysql_query($link,$query);
+                 $rows1 = mysqli_use_result($link);
+                 
+                // fetching rows one at a time
+                $row1 = mysqli_fetch_row($rows1);
+                $id = $row1[0];
                 
-                if($infrastructure === false)
-                {
-                    echo "ERROR: Could not execute $query. " . mysqli_error($link);
-                }
+                // querying the infrastructure table for facilities of respective college
+                $query2 = "SELECT facilities FROM infrastructure WHERE college_id = $id";
+                $bool = mysqli_real_query($link,$query2);
+                if(!$bool)
+                    echo "ERROR: Could not execute $query2. " . mysqli_error($link);
+                    
+                $rows = mysqli_use_result($link);
+                $row = mysqli_fetch_row($rows);
                 
                 // print each college's details one by one
+                print("<tr>");
+                print("<th>Serial_number: {$row1[0]}</th>");
+                print("<th>Name: {$row1[1]}</th>");
+                print("</tr>");
+                print("<tr>Address {$row1["2"]}</tr>");
+                print("<tr>Reviews {$row1[3]}</tr>");
+                
                     print("<tr>");
-                    print("<th>Serial_number: {$row["Serial_number"]}</th>");
-                    print("<th>Name: {$row["Name"]}</th>");
-                    print("</tr>");
-                    print("<tr>Address {$row["Address"]}</tr>");
-                    print("<tr>Year of establishment {$row["Year of establishment"]}</tr>");
-                    print("<tr>For courses offered,{$string} </tr>");
-                    print("<tr>");
-                    foreach( $infrastructure as $infra)
+                    while(mysqli_next_result($link))
                     {
-                        print("<td>,{$infra["facilities"]}, </td>");
+                        print("<td>,{$row[1]}, </td>");
                     }
                     print("</tr>");
-                    
-                    print("<tr>Website link: {$row["Website"]}</tr>");
-            }
+            }while(mysqli_next_result($link))
         
             
        
