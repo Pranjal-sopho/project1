@@ -18,7 +18,7 @@
         $page = 1;
         
         // scrape data from shikha.com
-        $string = file_get_contents("http://www.shiksha.com/b-tech/colleges/b-tech-colleges-".urlencode($_POST["city"])."-{$page}");
+        $string = file_get_contents("http://www.shiksha.com/b-tech/colleges/b-tech-colleges-".urlencode(htmlspecialchars($_POST["city"]))."-{$page}");
         
         if($string === false)
             apologize("Please enter a valid city name");
@@ -40,7 +40,7 @@
                 // delay for 2s
                 sleep(2);
                 
-                $string = file_get_contents("http://www.shiksha.com/b-tech/colleges/b-tech-colleges-".urlencode($_POST["city"])."-$page");
+                $string = file_get_contents("http://www.shiksha.com/b-tech/colleges/b-tech-colleges-".urlencode(htmlspecialchars($_POST["city"]))."-$page");
             } 
             
             // attempting to connect to mysql server

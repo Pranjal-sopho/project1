@@ -10,6 +10,8 @@
         exit;
     }
     
+    $GLOBALS["number"] = 0;
+    
     // implementing apologize
     function apologize($message)
     {
@@ -53,18 +55,19 @@
         // inserting the data in the table college_info
         $length1= sizeof($name[1]);
         $i =0;
-        
+
         while($i < $length1)
         {
             // trimming name and address furthur before storing
             $name[1][$i] =  preg_replace('/<a.*_blank">/',"",$name[1][$i]);
             $address[1][$i] = preg_replace('/\| /',"",$address[1][$i]);
-            $query = "INSERT INTO college_info (Name,Address) VALUES (\"".$name[1][$i]."\",\"".$address[1][$i]."\")";
+            $GLOBALS["number"]++;
+            $query = "INSERT INTO college_info (Serial_number,Name,Address) VALUES (\"".$GLOBALS["number"]."\",\"".$name[1][$i]."\",\"".$address[1][$i]."\")";
             $bool = mysqli_query($link, $query);
             
             //  Error checking
-            //if(!$bool)
-              //  apologize("ERROR: Could not execute query. " . mysqli_error($link));
+            if(!$bool)
+                apologize("ERROR: Could not execute query. " . mysqli_error($link));
             
             $i++;
         }
@@ -83,12 +86,14 @@
             $bool = mysqli_query($link,$query);
             
             //  Error checking
-            if(!$bool)
-                apologize("ERROR: Could not execute query. " . mysqli_error($link));
+           // if(!$bool)
+             //   apologize("ERROR: Could not execute query. " . mysqli_error($link));
                 
             $i++;
         }
     
+       // $GLOBALS["number"] = $GLOBALS["number"]+ $length1;
+        
         // closing connection
         mysqli_close($link);
     }
