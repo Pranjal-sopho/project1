@@ -17,7 +17,7 @@
     }
     
     // scrapes data for a college and stores it in database
-    function get_college_info($string)
+    function get_college_info($string,$page)
     {
         // extracting college name
         preg_match_all('/(?<=class="tuple-clg-heading">)(.*)<\/a>/',$string,$name);
@@ -35,12 +35,26 @@
         $link = mysqli_connect("127.0.0.1", "pranjal123321", "zrrJ8zNEdpuTwuty", "project1");
         if($link === false)
             die("ERROR: Could not connect. " . mysqli_connect_error());
-        
+            
+         // deleting data previously stored in tables college_info and infrastructure(if any), but only if it's a different city
+        if($page == 1)
+        {
+            $query = "DELETE FROM college_info WHERE Serial_number !=0 ";
+            $bool = mysqli_query($link,$query);
+            if(!$bool)
+                apologize("ERROR: Could not execute query. " . mysqli_error($link));
+            
+            $query = "DELETE FROM infrastructure WHERE college_id !=0";
+            $bool = mysqli_query($link,$query);
+            if(!$bool)
+                apologize("ERROR: Could not execute query. " . mysqli_error($link));
+        }
+            
         // inserting the data in the table college_info
         $length1= sizeof($name[1]);
         $i =0;
         
-        while($length1--)
+        while($i < $length1)
         {
             // trimming name and address furthur before storing
             $name[1][$i] =  preg_replace('/<a.*_blank">/',"",$name[1][$i]);
@@ -49,27 +63,28 @@
             $bool = mysqli_query($link, $query);
             
             //  Error checking
-            if(!$bool)
-                apologize("ERROR: Could not execute query. " . mysqli_error());
+            //if(!$bool)
+              //  apologize("ERROR: Could not execute query. " . mysqli_error($link));
             
             $i++;
         }
         
-        $id=1;
+        $id=0;
         // inserting data in table infrastructure
         $length2 = sizeof($infrastructure[1]);
+        $i=0;
         
         while ($length2--)
         {
-            $query = "INSERT INTO infrastucture (college_id,facilities) VALUES (\"".$id."\",\"".$infrastructure[1][$i]."\")";
+             if($infrastructure[1][$i]=="Library")
+                $id++;
+                
+            $query = "INSERT INTO infrastructure (college_id,facilities) VALUES (\"".$id."\",\"".$infrastructure[1][$i]."\")";
             $bool = mysqli_query($link,$query);
             
             //  Error checking
             if(!$bool)
-                apologize("ERROR: Could not execute query. " . mysqli_error());
-                
-             if($infrastructure[1][$i]=="Labs")
-                $id++;
+                apologize("ERROR: Could not execute query. " . mysqli_error($link));
                 
             $i++;
         }

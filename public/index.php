@@ -18,20 +18,21 @@
         $page = 1;
         
         // scrape data from shikha.com
-        $string = file_get_contents("http://www.shiksha.com/b-tech/colleges/b-tech-colleges-".urlencode($_POST["city"])."-$page");
+        $string = file_get_contents("http://www.shiksha.com/b-tech/colleges/b-tech-colleges-".urlencode($_POST["city"])."-{$page}");
         
         if($string === false)
             apologize("Please enter a valid city name");
     
         else
         {
-            while(true)
+            // counting number of pages
+            preg_match_all('/class=" linkpagination">/',$string,$result);
+            $pages = sizeof($result[0])+1;
+            
+            while($pages--)
             {
-                if($string === false)
-                    break;
-                    
                 // passing the string for scraping data  and storing in database
-                get_college_info($string);
+                get_college_info($string,$page);
                     
                 // change page
                 $page = $page +1;
@@ -47,7 +48,6 @@
             
             // selecting data from mysql table
             $query = "SELECT * FROM college_info WHERE 1";
-            mysqli_query($link,$query);
             
             // render results
             render("result.php",["title" => "result","query" => $query,"link" => $link]);
