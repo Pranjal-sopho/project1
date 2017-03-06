@@ -10,17 +10,17 @@
         <?php
             
             // querying database
-            $bool = mysqli_real_query($link,$query);
+            $bool = mysqli_query($link,$query);
             if($bool === false )
-                 "ERROR: Could not execute $query. " . mysqli_error($link);
+                 die("ERROR: Could not execute $query. " . mysqli_error($link));
             
-            do
+            while($row1 = mysqli_fetch_array($bool))
             {
                 // use result
-                 $rows1 = mysqli_use_result($link);
+                //$rows1 = mysqli_use_result($link);
                  
                 // fetching rows one at a time
-                $row1 = mysqli_fetch_row($rows1);
+              //  $row1 = mysqli_fetch_row($rows1);
                 $id = $row1[0];
                 
                 
@@ -57,7 +57,7 @@
                 }while(mysqli_next_result($link))
                 
                 print("<tr>");*/
-            }while(mysqli_next_result($link))
+            }
         
             
        

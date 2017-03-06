@@ -35,6 +35,7 @@
         
         // attempting to connect to mysql server
         $link = mysqli_connect("127.0.0.1", "pranjal123321", "zrrJ8zNEdpuTwuty", "project1");
+        
         if($link === false)
             die("ERROR: Could not connect. " . mysqli_connect_error());
             
@@ -43,11 +44,13 @@
         {
             $query = "DELETE FROM college_info WHERE Serial_number !=0 ";
             $bool = mysqli_query($link,$query);
+            
             if(!$bool)
                 apologize("ERROR: Could not execute query. " . mysqli_error($link));
             
             $query = "DELETE FROM infrastructure WHERE college_id !=0";
             $bool = mysqli_query($link,$query);
+            
             if(!$bool)
                 apologize("ERROR: Could not execute query. " . mysqli_error($link));
         }
@@ -58,14 +61,16 @@
 
         while($i < $length1)
         {
+            $GLOBALS["number"]++;
+            
             // trimming name and address furthur before storing
             $name[1][$i] =  preg_replace('/<a.*_blank">/',"",$name[1][$i]);
             $address[1][$i] = preg_replace('/\| /',"",$address[1][$i]);
-            $GLOBALS["number"]++;
+            
+            // now storing in database
             $query = "INSERT INTO college_info (Serial_number,Name,Address) VALUES (\"".$GLOBALS["number"]."\",\"".$name[1][$i]."\",\"".$address[1][$i]."\")";
             $bool = mysqli_query($link, $query);
             
-            //  Error checking
             if(!$bool)
                 apologize("ERROR: Could not execute query. " . mysqli_error($link));
             
@@ -73,6 +78,7 @@
         }
         
         $id=0;
+        
         // inserting data in table infrastructure
         $length2 = sizeof($infrastructure[1]);
         $i=0;
@@ -85,14 +91,8 @@
             $query = "INSERT INTO infrastructure (college_id,facilities) VALUES (\"".$id."\",\"".$infrastructure[1][$i]."\")";
             $bool = mysqli_query($link,$query);
             
-            //  Error checking
-           // if(!$bool)
-             //   apologize("ERROR: Could not execute query. " . mysqli_error($link));
-                
             $i++;
         }
-    
-       // $GLOBALS["number"] = $GLOBALS["number"]+ $length1;
         
         // closing connection
         mysqli_close($link);

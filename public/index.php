@@ -3,7 +3,8 @@
     // enable sessions
     session_start();
     
-     require("../includes/helpers.php"); 
+    // configuration
+    require("../includes/helpers.php"); 
 
     // if user reached page via a GET request
     if ($_SERVER["REQUEST_METHOD"] == "GET")
@@ -29,6 +30,7 @@
             preg_match_all('/class=" linkpagination">/',$string,$result);
             $pages = sizeof($result[0])+1;
             
+            // scrape datafrom each page
             while($pages--)
             {
                 // passing the string for scraping data  and storing in database
