@@ -10,6 +10,7 @@
         exit;
     }
     
+    // keeping count of serial numbers (due to problems in auto increment) 
     $GLOBALS["number"] = 0;
     
     // implementing apologize
@@ -68,7 +69,7 @@
             $address[1][$i] = preg_replace('/\| /',"",$address[1][$i]);
             
             // now storing in database
-            $query = "INSERT INTO college_info (Serial_number,Name,Address) VALUES (\"".$GLOBALS["number"]."\",\"".$name[1][$i]."\",\"".$address[1][$i]."\")";
+            $query = "INSERT INTO college_info (Serial_number,Name,Address) VALUES (\"".$GLOBALS["number"]."\",\"".htmlspecialchars($name[1][$i])."\",\"".$address[1][$i]."\")";
             $bool = mysqli_query($link, $query);
             
             if(!$bool)
