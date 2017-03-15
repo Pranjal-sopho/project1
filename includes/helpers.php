@@ -6,7 +6,9 @@
         extract($values);
 
         // render view 
+        require("../views/header.php");
         require("../views/{$view}");
+        require("../views/footer.php");
         exit;
     }
     

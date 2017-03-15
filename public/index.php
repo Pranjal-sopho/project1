@@ -1,8 +1,5 @@
 <?php
 
-    // enable sessions
-    session_start();
-    
     // configuration
     require("../includes/helpers.php"); 
 
@@ -47,18 +44,47 @@
                 // passing the string for scraping data  and storing in database
                 get_college_info($string,$page);
                 
-                // delay for 2s
-                sleep(2);
+                // delay for 1s
+                sleep(1);
             } 
             
             // attempting to connect to mysql server
             $link = mysqli_connect("127.0.0.1", "pranjal123321", "zrrJ8zNEdpuTwuty", "project1");
             
+             // querying the infrastructure table for facilities of respective college
+            $query = "SELECT facilities FROM infrastructure WHERE college_id !=0";
+            $bool = mysqli_query($link,$query);
+             
+             if($bool === false )
+                die("ERROR: Could not execute $query. " . mysqli_error($link));
+            
+            $i =0;
+            while($row = mysqli_fetch_array($bool,MYSQLI_ASSOC))
+            {
+                $infra[$i++] = $row;
+            }
+            
+            // freeing memory
+            mysqli_free_result($bool);
+                
             // selecting data from mysql table
             $query = "SELECT * FROM college_info WHERE 1";
+            $bool = mysqli_query($link,$query);
             
+            if($bool === false )
+                 die("ERROR: Could not execute $query. " . mysqli_error($link));
+              
+             $i=0;   
+           while($row = mysqli_fetch_array($bool,MYSQLI_ASSOC))
+                $result[$i++] = $row;
+            
+            mysqli_free_result($bool);
+            
+            //close connection
+            mysqli_close($link);
+
             // render results
-            render("result.php",["title" => "result","query" => $query,"link" => $link]);
+            render("result.php",["title" => "result","infra" => $infra,"result" => $result]);
         }
     }
 ?>
