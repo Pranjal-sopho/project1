@@ -34,7 +34,7 @@
         preg_match_all('/(?<=<h3>)(.*)<\/h3>/',$string,$infrastructure);
         
         // storing number of reviews
-        preg_match_all('/(?<= class=<span><b>)(.*)<\/b></',$string,$reviews);
+        preg_match_all('/ class="tpl-course-name".*?(?=class="tupl-options")/s',$string,$reviews);
         
         // attempting to connect to mysql server
         $link = mysqli_connect("127.0.0.1", "pranjal123321", "zrrJ8zNEdpuTwuty", "project1");
@@ -66,12 +66,13 @@
         {
             $GLOBALS["number"]++;
             
-            // trimming name and address furthur before storing
+            // trimming name,reviews and address furthur before storing
             $name[1][$i] =  preg_replace('/<a.*_blank">/',"",$name[1][$i]);
             $address[1][$i] = preg_replace('/\| /',"",$address[1][$i]);
+            preg_match('/<b>(.+)(?=<\/b><a target="_blank" type="reviews")/',$reviews[0][$i],$ans[$i]);
             
             // now storing in database
-            $query = "INSERT INTO college_info (Serial_number,Name,Address) VALUES (\"".$GLOBALS["number"]."\",\"".htmlspecialchars($name[1][$i])."\",\"".$address[1][$i]."\")";
+            $query = "INSERT INTO college_info (Serial_number,Name,Address,Reviews) VALUES (\"".$GLOBALS["number"]."\",\"".html_entity_decode($name[1][$i])."\",\"".$address[1][$i]."\",\"".$ans[$i][1]."\")";
             $bool = mysqli_query($link, $query);
             
             if(!$bool)

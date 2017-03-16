@@ -75,7 +75,7 @@
                  die("ERROR: Could not execute $query. " . mysqli_error($link));
               
              $i=0;   
-           while($row = mysqli_fetch_array($bool,MYSQLI_ASSOC))
+            while($row = mysqli_fetch_array($bool,MYSQLI_ASSOC))
                 $result[$i++] = $row;
             
             mysqli_free_result($bool);

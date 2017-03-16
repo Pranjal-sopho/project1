@@ -21,7 +21,7 @@
        
        while($length2--)
         {
-            print("{$infra[$j++]["facilities"]} ");
+            print("{$infra[$j++]["facilities"]} &emsp;");
             if($infra[$j]["facilities"] === "Library")
             break;
         }
