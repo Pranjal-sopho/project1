@@ -14,11 +14,12 @@
     
     // keeping count of serial numbers (due to problems in auto increment) 
     $GLOBALS["number"] = 0;
+    $GLOBALS["id"] =0;
     
     // implementing apologize
     function apologize($message)
     {
-        render("apology.php", ["message" => $message]);
+        render("apology.php", ["message" => $message,"title" => "Sorry!"]);
     }
     
     // scrapes data for a college and stores it in database
@@ -31,7 +32,7 @@
         preg_match_all('/(?<=<p>| )(.*)<\/p><\/h2>/',$string,$address);
         
         // extracting infrastructural info
-        preg_match_all('/(?<=<h3>)(.*)<\/h3>/',$string,$infrastructure);
+        preg_match_all('/class="tuple-clg-heading.*?(?=class="tpl-curse-dtls")/s',$string,$infrastructure);
         
         // storing number of reviews
         preg_match_all('/ class="tpl-course-name".*?(?=class="tupl-options")/s',$string,$reviews);
@@ -40,7 +41,7 @@
         $link = mysqli_connect("127.0.0.1", "pranjal123321", "zrrJ8zNEdpuTwuty", "project1");
         
         if($link === false)
-            die("ERROR: Could not connect. " . mysqli_connect_error());
+            apologize("ERROR: Could not connect. " . mysqli_connect_error());
             
          // deleting data previously stored in tables college_info and infrastructure(if any), but only if it's a different city
         if($page == 1)
@@ -72,7 +73,8 @@
             preg_match('/<b>(.+)(?=<\/b><a target="_blank" type="reviews")/',$reviews[0][$i],$ans[$i]);
             
             // now storing in database
-            $query = "INSERT INTO college_info (Serial_number,Name,Address,Reviews) VALUES (\"".$GLOBALS["number"]."\",\"".html_entity_decode($name[1][$i])."\",\"".$address[1][$i]."\",\"".$ans[$i][1]."\")";
+            $query = sprintf("INSERT INTO college_info (Serial_number,Name,Address,Reviews) VALUES ('%s','%s','%s','%s')",
+                    $GLOBALS["number"],mysqli_real_escape_string($link,html_entity_decode($name[1][$i])),$address[1][$i],$ans[$i][1]);
             $bool = mysqli_query($link, $query);
             
             if(!$bool)
@@ -81,21 +83,33 @@
             $i++;
         }
         
-        $id=0;
+        
         
         // inserting data in table infrastructure
-        $length2 = sizeof($infrastructure[1]);
+        $length2 = sizeof($infrastructure[0]);
         $i=0;
         
-        while ($length2--)
+       while ( $length2--)
         {
-             if($infrastructure[1][$i]=="Library")
-                $id++;
-                
-            $query = "INSERT INTO infrastructure (college_id,facilities) VALUES (\"".$id."\",\"".$infrastructure[1][$i]."\")";
-            $bool = mysqli_query($link,$query);
+            $GLOBALS["id"] = $GLOBALS["id"] +1;
+            preg_match_all('/(?<=<h3>)(.*)<\/h3>/',$infrastructure[0][$i],$infra);
             
-            $i++;
+            $length3 = sizeof($infra[1]);
+            $j =0;
+            if($length3 == 0)
+            {
+                 $query = sprintf("INSERT INTO infrastructure (college_id,facilities) VALUES ('%s','%s')",$GLOBALS["id"],"---");
+                
+                $bool = mysqli_query($link,$query);
+            }
+            while( $j <$length3)
+            {
+                
+                $query = sprintf("INSERT INTO infrastructure (college_id,facilities) VALUES ('%s','%s')",$GLOBALS["id"],$infra[1][$j++]);
+                
+                $bool = mysqli_query($link,$query);
+           }
+           $i++;
         }
         
         // closing connection

@@ -19,11 +19,10 @@
         print("<td>{$result[$i]["Address"]}</td>");
         print("<td>");
        
-       while($length2--)
+       while($result[$i]["Serial_number"] === $infra[$j]["college_id"])
         {
             print("{$infra[$j++]["facilities"]} &emsp;");
-            if($infra[$j]["facilities"] === "Library")
-            break;
+            
         }
         
         print("</td>");

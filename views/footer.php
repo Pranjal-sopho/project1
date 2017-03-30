@@ -22,7 +22,7 @@
             </ul>
             <div class="footer-info">
                 <p class="footer-credit">Website design by <a href="#">Pranjal Sharma</a></p>
-                <p class="footer-legal">&copy; 2017. All rights reserved.</p>
+                <p class="footer-legal">&copy; 2017. All rights reserved.&nbsp;&nbsp;Powered by: <a href="http://sophomores.in/">SophomoreS.in</a></p>
             </div>
         </div>
     </footer>

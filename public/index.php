@@ -11,7 +11,7 @@
     {
         // validate submission
         if (empty($_POST["city"]))
-            apologize("You must provide a city name.");
+            apologize("You must provide a city name");
     
         else
         {
@@ -19,8 +19,8 @@
             $page = 0;
             $pages = 1;
         
-            // convert city name  to lowercase
-            $_POST["city"] = htmlspecialchars(strtolower($_POST["city"]));
+            // convert city name  to lowercase ans preventing sql injection
+            $_POST["city"] = strtolower($_POST["city"]);
             
             // scrape data from each page
             while($pages--)
@@ -28,15 +28,15 @@
                 // change page
                 $page++;
                 
-                // scrape data from shikha.com
-                $string = file_get_contents("http://www.shiksha.com/b-tech/colleges/b-tech-colleges-".urlencode($_POST["city"])."-{$page}");
+                // scrape data from shiksha.com
+                $string = @file_get_contents("http://www.shiksha.com/b-tech/colleges/b-tech-colleges-".urlencode($_POST["city"])."-{$page}");
         
                 if($string === false)
                     apologize("Please enter a valid city name");
                 
                 if($page == 1)
                 {
-                    // counting toal number of pages
+                    // counting total number of pages
                     preg_match_all('/class=" linkpagination">/',$string,$result);
                     $pages = sizeof($result[0]);
                 }
@@ -52,7 +52,7 @@
             $link = mysqli_connect("127.0.0.1", "pranjal123321", "zrrJ8zNEdpuTwuty", "project1");
             
              // querying the infrastructure table for facilities of respective college
-            $query = "SELECT facilities FROM infrastructure WHERE college_id !=0";
+            $query = "SELECT college_id,facilities FROM infrastructure WHERE college_id !=0";
             $bool = mysqli_query($link,$query);
              
              if($bool === false )
@@ -72,7 +72,7 @@
             $bool = mysqli_query($link,$query);
             
             if($bool === false )
-                 die("ERROR: Could not execute $query. " . mysqli_error($link));
+                 apologize("ERROR: Could not execute $query. " . mysqli_error($link));
               
              $i=0;   
             while($row = mysqli_fetch_array($bool,MYSQLI_ASSOC))

@@ -22,10 +22,10 @@
 </head>
 <body>
     <div id="load"></div>
+     <div id = "logo">
+                    <a href="/"><img alt="The College Finder" src="/images/logo.jpg"/></a>
+                </div>
     <div id="contents">
-
     <div class="content">
-        <h1>
-        	The College Finder
-        </h1>
+       
     </div>

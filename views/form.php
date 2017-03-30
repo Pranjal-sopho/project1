@@ -1,10 +1,10 @@
-<form action="index.php" method="post">
+<form class ="form" action="index.php" method="post">
     <section>
     <div class="form-group">
-            <input autocomplete="off" autofocus class="form-control" name="city" placeholder="Enter City" type="text"/>
+            <input autocomplete="on" autofocus class="form-control" name="city" placeholder="Enter City" type="text"/>
     </div>
     <div>
-    <button class="but" type="submit">Submit</button>
+    <button class="but" type="submit">Search</button>
     </div>        
     </section>
 </form>	
