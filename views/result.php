@@ -8,7 +8,7 @@
 
     <?php
     $length1 = sizeof($result);
-     $length2 = sizeof($infra);  
+    
     // print each college's details one by one
     $i=0;
     $j=0;
@@ -19,11 +19,8 @@
         print("<td>{$result[$i]["Address"]}</td>");
         print("<td>");
        
-       while($result[$i]["Serial_number"] === $infra[$j]["college_id"])
-        {
+        while($result[$i]["Serial_number"] === $infra[$j]["college_id"])
             print("{$infra[$j++]["facilities"]} &emsp;");
-            
-        }
         
         print("</td>");
         print("<td>{$result[$i++]["Reviews"]}</td>");
