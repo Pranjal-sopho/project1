@@ -24,6 +24,48 @@
         render("apology.php", ["message" => $message,"title" => "Sorry!"]);
     }
     
+    // query database for insertion, selection and deletion
+    function query($query)
+    {
+        // attempting to connect to mysql server
+        $link = mysqli_connect("127.0.0.1", "pranjal123321", "zrrJ8zNEdpuTwuty", "project1");
+            
+        if($link === false)
+            apologize("ERROR: Could not execute query. 1" . mysqli_error($link));
+            
+        // checking if the query is one of insert, update or delete
+        preg_match('/.*? /',$query,$match);
+        
+        // querying database
+        $result = mysqli_query($link,$query);
+        
+        if($result === false )
+            apologize("ERROR: Could not execute query.2 " . mysqli_error($link));
+        
+        // if query is select, fetch the resultant object and store in a array
+        if($match[0] === "SELECT ")
+        {
+            $i=0;    
+            while($row = mysqli_fetch_array($result,MYSQLI_ASSOC))
+            {
+                // iterating through each row and storing it in rows[]
+                $rows[$i++] = $row;
+            }
+            
+            // freeing result set
+            mysqli_free_result($result);
+            
+            // close connection and return the numeric array thus formed
+            mysqli_close($link);
+            
+            return $rows;
+        }
+        
+        // close connection
+        mysqli_close($link);
+        return true;
+    }
+    
     // scrapes data for a college and stores it in database
     function get_college_info($string,$page)
     {
@@ -39,27 +81,13 @@
         // extracting number of reviews
         preg_match_all('/ class="tpl-course-name".*?(?=class="tupl-options")/s',$string,$reviews);
         
-        // attempting to connect to mysql server
-        $link = mysqli_connect("127.0.0.1", "pranjal123321", "zrrJ8zNEdpuTwuty", "project1");
-        
-        if($link === false)
-            apologize("ERROR: Could not connect. " . mysqli_connect_error());
             
         // deleting data previously stored in tables college_info and infrastructure(if any), but only if it's a different city
         if($page === 1)
         {
             // creating and executing query for both tables
-            $query = "DELETE FROM college_info WHERE Serial_number !=0 ";
-            $bool = mysqli_query($link,$query);
-            
-            if(!$bool)
-                apologize("ERROR: Could not execute query. " . mysqli_error($link));
-            
-            $query = "DELETE FROM infrastructure";
-            $bool = mysqli_query($link,$query);
-            
-            if(!$bool)
-                apologize("ERROR: Could not execute query. " . mysqli_error($link));
+            query("DELETE FROM college_info ");
+            query("DELETE FROM infrastructure");
         }
             
         // inserting the data in the table college_info
@@ -76,15 +104,13 @@
             $address[1][$i] = preg_replace('/\| /',"",$address[1][$i]);
             preg_match('/<b>(.+)(?=<\/b><a target="_blank" type="reviews")/',$reviews[0][$i],$ans[$i]);
             
+            $link = mysqli_connect("127.0.0.1", "pranjal123321", "zrrJ8zNEdpuTwuty", "project1");
+            
             // now creating query and storing in database
-            $query = sprintf("INSERT INTO college_info (Serial_number,Name,Address,Reviews) VALUES ('%s','%s','%s','%s')",
+            $sql = sprintf("INSERT INTO college_info (Serial_number,Name,Address,Reviews) VALUES ('%s','%s','%s','%s')",
                      $GLOBALS["id1"],mysqli_real_escape_string($link,html_entity_decode($name[1][$i])),$address[1][$i],$ans[$i][1]);
             
-            $bool = mysqli_query($link, $query);
-            
-            if(!$bool)
-                apologize("ERROR: Could not execute query. " . mysqli_error($link));
-            
+            query($sql);
             $i++;
         }
         
@@ -106,19 +132,18 @@
             // if facilities aren't available store "---"
             if($length3 == 0)
             {
-                $query = sprintf("INSERT INTO infrastructure (college_id,facilities) VALUES ('%s','%s')",$GLOBALS["id2"],"---");
-                $bool = mysqli_query($link,$query);
+                $sql = sprintf("INSERT INTO infrastructure (college_id,facilities) VALUES ('%s','%s')",$GLOBALS["id2"],"---");
+                query($sql);
             }
             
             // else prepare query and execute query (for 1 college at a time)
             while( $j <$length3)
             {
-                $query = sprintf("INSERT INTO infrastructure (college_id,facilities) VALUES ('%s','%s')",$GLOBALS["id2"],$infra[1][$j++]);
-                $bool = mysqli_query($link,$query);
+                $sql = sprintf("INSERT INTO infrastructure (college_id,facilities) VALUES ('%s','%s')",$GLOBALS["id2"],$infra[1][$j++]);
+                query($sql);
             }
         }
         
-        // closing connection
-        mysqli_close($link);
+       
     }
 ?>

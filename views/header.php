@@ -2,8 +2,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet"  type="text/css" href="/css/style.css">
 <title><?= $title ?></title>
-<link rel="stylesheet" href="/css/style.css">
 <script type="text/javascript" ></script>
 <script type="text/javascript">
    document.onreadystatechange = function () {

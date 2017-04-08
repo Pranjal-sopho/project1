@@ -9,6 +9,7 @@
     
     else if($_SERVER["REQUEST_METHOD"] == "POST")
     {
+        
         // validate submission
         if (empty($_POST["city"]))
             apologize("You must provide a city name");
@@ -44,45 +45,16 @@
                 // passing the string for scraping data  and storing in database
                 get_college_info($string,$page);
                 
-                // delay for 1s
-                sleep(1);
+                // delay for 2s
+                sleep(2);
             } 
             
-            // attempting to connect to mysql server
-            $link = mysqli_connect("127.0.0.1", "pranjal123321", "zrrJ8zNEdpuTwuty", "project1");
-            
             // querying the infrastructure table for facilities of all colleges
-            $query = "SELECT college_id,facilities FROM infrastructure ";
-            $bool = mysqli_query($link,$query);
-             
-             if($bool === false )
-                apologize("ERROR: Could not execute $query. " . mysqli_error($link));
+            $infra = query("SELECT college_id,facilities FROM infrastructure ");
             
-            // fetching the retrieved data and storing it in array $infra
-            $i =0;
-            while($row = mysqli_fetch_array($bool,MYSQLI_ASSOC))
-                $infra[$i++] = $row;
-            
-            // freeing memory
-            mysqli_free_result($bool);
-                
             // preparing query and selecting data from table college_info
-            $query = "SELECT * FROM college_info";
-            $bool = mysqli_query($link,$query);
+            $result = query("SELECT * FROM college_info");
             
-            if($bool === false )
-                 apologize("ERROR: Could not execute $query. " . mysqli_error($link));
-             
-            // storing the fetched data in $result  
-            $i=0;   
-            while($row = mysqli_fetch_array($bool,MYSQLI_ASSOC))
-                $result[$i++] = $row;
-            
-            mysqli_free_result($bool);
-            
-            //close connection
-            mysqli_close($link);
-
             // render(output) results
             render("result.php",["title" => "result","infra" => $infra,"result" => $result]);
         }

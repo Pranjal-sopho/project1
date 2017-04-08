@@ -1,6 +1,6 @@
 
 <body>
-    <p>
+    <p id = "sorry">
        <?= print($message); ?>
     </p>
 </body>
