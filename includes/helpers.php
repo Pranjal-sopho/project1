@@ -94,6 +94,7 @@
         
         $length1= sizeof($name[1]);
         $i =0;
+        $link = mysqli_connect("127.0.0.1", "pranjal123321", "zrrJ8zNEdpuTwuty", "project1");
 
         while($i < $length1)
         {
@@ -103,8 +104,6 @@
             $name[1][$i] =  preg_replace('/<a.*_blank">/',"",$name[1][$i]);
             $address[1][$i] = preg_replace('/\| /',"",$address[1][$i]);
             preg_match('/<b>(.+)(?=<\/b><a target="_blank" type="reviews")/',$reviews[0][$i],$ans[$i]);
-            
-            $link = mysqli_connect("127.0.0.1", "pranjal123321", "zrrJ8zNEdpuTwuty", "project1");
             
             // now creating query and storing in database
             $sql = sprintf("INSERT INTO college_info (Serial_number,Name,Address,Reviews) VALUES ('%s','%s','%s','%s')",

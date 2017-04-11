@@ -24,7 +24,7 @@
             $pages = 1;
         
             // scrape data from each page
-            while($pages--)
+            while($page<=$pages)
             {
                 // next page
                 $page++;

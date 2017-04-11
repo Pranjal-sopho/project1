@@ -7,27 +7,35 @@ html * {
   padding: 0;
 }
 
+
 .tab {
 	align-content:center ;
 	font-size:20px;
 	font-style:normal;
 	width:100%;
-	padding:2px;
+	border: 1px solid #ddd;
+    padding: 8px;
 }
+
+table tr:nth-child(even){background-color: #cecccc;}
+table tr:nth-child(odd){
+	background-color:#fff;
+}
+.tab tr:hover {background-color: #31842a;}
 
 tr {
 	margin-top:5px;
 }
 
 th {
-	font-size:30px;
+	font-size:34px;
 	padding:10px;
-	background-color: #D3D3D3;
+	background-color: #4CAF50;
+    color: white;
 }
 
 td {
 	border-bottom: 5px solid green;
-	background-color: #D3D3D3;
 	margin-top:2px;
 	text-align:center;
 	padding:10px;
@@ -51,7 +59,7 @@ td {
 }
 
 body {
-	font-family: arial, sans-serif;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 	font-size: 1vw;
 	background: white;
 	align-content:center;
@@ -99,7 +107,7 @@ footer {
 	margin-top: 5em;
 	padding-top: 10em;
 	padding-bottom:0em;
-	background-color :black;
+	background-color :#464647;
 	height:20em;
 	}
 .footer-content {
@@ -165,8 +173,9 @@ footer {
 .footer-credit {
 	float:right;
 }
-.footer-credit a:hover {
+.footer-legal a:hover {
 	text-decoration: none;
+	color: #00f441;
 }
 
 #load{
@@ -174,6 +183,6 @@ footer {
     height:100%;
     position:fixed;
     z-index:9999;
-    background:url("https://www.creditmutuel.fr/cmne/fr/banques/webservices/nswr/images/loading.gif") no-repeat center center rgba(0,0,0,0.25)
+    background:url("http://www.downgraf.com/wp-content/uploads/2014/09/15-progress_bar.gif") no-repeat center center rgba(0,0,0,0.25)
 }
 

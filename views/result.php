@@ -7,6 +7,7 @@
      </tr> 
 
     <?php
+    
     $length1 = sizeof($result);
     
     // print each college's details one by one
