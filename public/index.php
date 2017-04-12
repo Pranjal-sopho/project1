@@ -22,9 +22,9 @@
             // initializing current page and number of pages
             $page = 0;
             $pages = 1;
-        
+           
             // scrape data from each page
-            while($page<=$pages)
+            while($pages--)
             {
                 // next page
                 $page++;
@@ -45,8 +45,8 @@
                 // passing the string for scraping data  and storing in database
                 get_college_info($string,$page);
                 
-                // delay for 2s
-                sleep(2);
+               // wait for 2s before next request
+               sleep(2);
             } 
             
             // querying the infrastructure table for facilities of all colleges

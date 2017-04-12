@@ -21,7 +21,7 @@
     // implementing apologize
     function apologize($message)
     {
-        render("apology.php", ["message" => $message,"title" => "Sorry!"]);
+        render("apology.php",["message" => $message,"title" => "Sorry!"]);
     }
     
     // query database for insertion, selection and deletion
