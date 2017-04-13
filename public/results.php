@@ -3,7 +3,7 @@
     // configuration
     require("../includes/helpers.php");
     
-     if ($_SERVER["REQUEST_METHOD"] == "GET")
+    // if ($_SERVER["REQUEST_METHOD"] == "GET")
      {
         // querying the infrastructure table for facilities of all colleges
         $infra = query("SELECT college_id,facilities FROM infrastructure ");

@@ -1,10 +1,9 @@
-<form class ="form" action="index.php" method="post">
-    <section>
+<form class ="form"  action = "scrape_data.php" onsubmit="scrape(); return false;">
     <div class="form-group">
-            <input autocomplete="on" autofocus class="form-control" name="city" placeholder="Enter City" type="text"/>
+            <input autocomplete="on" autofocus class="form-control" id = "city" name="city" placeholder="Enter City" type="text"/>
     </div>
     <div>
-    <button class="but" type="submit">Search</button>
-    </div>        
-    </section>
+    <input type="submit" class = "but" value="SearcH">
+    </div>
 </form>	
+<div id="sorry"></div>
