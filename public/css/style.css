@@ -183,6 +183,7 @@ footer {
     height:100%;
     position:fixed;
     z-index:9999;
+    display: none;
     background: url("http://www.owlhatworld.com/wp-content/uploads/2015/12/53.gif");
 }
 

@@ -6,8 +6,8 @@
     // if user reached page via a GET request
     if ($_SERVER["REQUEST_METHOD"] == "GET")
         render("form.php", ["title" => "Form"]);
-    
-    else if($_SERVER["REQUEST_METHOD"] == "POST")
+        
+     else if($_SERVER["REQUEST_METHOD"] == "POST")
     {
         
         // validate submission
@@ -41,22 +41,15 @@
                     preg_match_all('/class=" linkpagination">/',$string,$result);
                     $pages = sizeof($result[0]);
                 }
-
                 // passing the string for scraping data  and storing in database
                 get_college_info($string,$page);
                 
-               // wait for 2s before next request
-               sleep(2);
+               // wait for 1s before next request
+               sleep(1);
             } 
             
-            // querying the infrastructure table for facilities of all colleges
-            $infra = query("SELECT college_id,facilities FROM infrastructure ");
-            
-            // preparing query and selecting data from table college_info
-            $result = query("SELECT * FROM college_info");
-            
-            // render(output) results
-            render("result.php",["title" => "result","infra" => $infra,"result" => $result]);
+            // render(output) 
+            render("loaded.php",["title" => "Done!!"]);
         }
     }
 ?>
